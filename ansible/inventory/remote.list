@@ -1,0 +1,6 @@
+[all:vars]
+ansible_become='yes'
+
+
+[hosts]
+10.10.1.110  ansible_user=ax1
