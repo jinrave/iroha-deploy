@@ -266,11 +266,127 @@ admin@ubuntu:~$ docker run --name iroha \
    -e KEY='node0' \
    hyperledger/iroha:latest
 ```
+## Testing Iroha Ledger
+---
+### Create First Transaction
+---
+> Link installation : https://iroha.readthedocs.io/en/latest/getting_started/cli-guide.html#creating-the-first-transaction
+
+**1. Launch iroha-cli**
+```BASH
+admin@ubuntu:~$ docker exec -it iroha /bin/bash
+```
+**2. Login default admin account**
+```BASH
+root@244e1831e5f8:/opt/iroha_data# iroha-cli -account_name admin@test
+```
+**3. New transaction (tx)**
+```BASH
+Choose what to do:
+1. New transaction (tx)
+2. New query (qry)
+3. New transaction status request (st)
+> : 1
+```
+**4. Create Asset (crt_ast)**
+```BASH
+Choose what to do:
+14. Create Asset (crt_ast)
+15. Add Peer to Iroha Network (add_peer)
+16. Add Asset Quantity (add_ast_qty)
+0. Back (b)
+> : 14
+```
+**5. Set Asset name**
+```BASH
+Asset name: coolcoin
+Domain Id: test
+Asset precision: 2
+```
+**6. Add one more command to the transaction (add)**
+```BASH
+1. Add one more command to the transaction (add)
+2. Send to Iroha peer (send)
+3. Go back and start a new transaction (b)
+4. Save as json file (save)
+> : 1
+```
+**7. Add Asset Quantity (add_ast_qty)**
+```BASH
+15. Add Peer to Iroha Network (add_peer)
+16. Add Asset Quantity (add_ast_qty)
+0. Back (b)
+> : 16
+```
+**8. Set Asset Quantity**
+```BASH
+Asset Id: coolcoin#test
+Amount to add, e.g 123.456: 200.50
+```
+**9. Send to Iroha peer (send)**
+```BASH
+1. Add one more command to the transaction (add)
+2. Send to Iroha peer (send)
+3. Go back and start a new transaction (b)
+4. Save as json file (save)
+> : 2
+Peer address (0.0.0.0): 
+Peer port (50051):
+```
+## Configure Ansible for Iroha
+---
+### Create SSH Connection peer host to remote server
+---
+> Link installation : https://www.techrepublic.com/article/how-to-install-ansible-on-ubuntu-server-18-04/
+
+**1. Generate ssh pub key at Host Server**
+```BASH
+admin@ubuntu:~$ ssh-keygen
+```
+> use blank passphrase for simple access to remote server
+
+**2. Get pub key at Host Server**
+```BASH
+admin@ubuntu:~$ cat ~/.ssh/id_rsa.pub
+```
+**3. Put Host Server pub key to all Remote Server**
+```BASH
+remote1@host:~$ nano ~/.ssh/authorized_keys
+```
+**4. Testing connection ssh from Host > Remote Server**
+```BASH
+remote1@host:~$ ssh remote1@<IP_ADDRESS_REMOTE>
+```
+---
+### Configuration ansible connection at Host Server
+---
+**1. Clone repositories**
+```BASH
+admin@ubuntu:~$ git clone https://github.com/jinrave/iroha-deploy.git
+```
+**2. Access folder iroha-deploy/ansible**
+```BASH
+admin@ubuntu:~$ cd iroha-deploy/ansible
+```
+**3. Config inventory/remote.list**
+```BASH
+remote1@host:~$ vi inventory/remote.list
+```
+**4. Setting remote server IP & User Access ssh**
+```BASH
+[all:vars]
+ansible_become='yes' #access for sudo in remote server
+
+[hosts]
+10.10.1.105  ansible_user=ax1 #<IP_ADDRESS_REMOTE> ansible_user=<USER_SSH>
+10.10.1.106  ansible_user=ax1 #<IP_ADDRESS_REMOTE> ansible_user=<USER_SSH>
+```
+> save change use `ctrl+c` and type `:wq`
+
+
 
 ## Authors
-
 * **jinrave** - *forked from* - [iroha-deploy](https://github.com/hyperledger/iroha-deploy/tree/master/ansible/roles/iroha-docker)
 
 ## License
-
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
