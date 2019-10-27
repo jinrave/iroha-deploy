@@ -3,5 +3,5 @@ ansible_become='yes'
 
 
 [hosts]
-10.10.1.105  ansible_user=ax1
-10.10.1.106  ansible_user=ax1
+10.10.1.102  ansible_user=ax1
+#10.10.1.106  ansible_user=ax1

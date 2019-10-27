@@ -7,4 +7,3 @@ config/tmp/ansible.log
 **/ansible-users/meta/.galaxy_install_info
 .travis.yml
 **/iroha-docker/group_vars
-**/iroha-docker/host_vars
